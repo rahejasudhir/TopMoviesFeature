@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.auth.AuthManager
 import com.example.topmoviesfeature.detail.SimilarFilmMapper.toSimilarFilm
 import com.example.topmoviesfeature.main.FilmRepository
-import com.example.topmoviesfeature.watchlist.WatchlistManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -23,7 +23,7 @@ import javax.inject.Inject
 internal class FilmDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val filmRepository: FilmRepository,
-    private val watchlistManager: WatchlistManager
+    private val authManager: AuthManager
 ) : ViewModel() {
 
     private val filmId: Long = savedStateHandle.get<Long>(FILM_ID)!!
@@ -38,8 +38,11 @@ internal class FilmDetailViewModel @Inject constructor(
     private val _sortType = MutableStateFlow(SortType.DEFAULT)
     val sortType = _sortType.asStateFlow()
 
-    private val _watchlist = MutableStateFlow(watchlistManager.getWatchlist())
-    val watchlist = _watchlist.asStateFlow()
+    private val _isLoggedIn = MutableStateFlow(authManager.isLoggedIn())
+    val isLoggedIn = _isLoggedIn.asStateFlow()
+
+    private val _watchlistMessage = MutableStateFlow<String?>(null)
+    val watchlistMessage = _watchlistMessage.asStateFlow()
 
     val sortedSimilarFilms = combine(_similarFilms, _sortType) { films, sort ->
         sort.sort(films)
@@ -84,12 +87,32 @@ internal class FilmDetailViewModel @Inject constructor(
     }
 
     fun toggleWatchlist(filmId: Long) {
-        if (watchlistManager.isInWatchlist(filmId)) {
-            watchlistManager.removeFromWatchlist(filmId)
-        } else {
-            watchlistManager.addToWatchlist(filmId)
+        if (!authManager.isLoggedIn()) {
+            _watchlistMessage.value = "Please login to add to watchlist"
+            return
         }
-        _watchlist.update { watchlistManager.getWatchlist() }
+
+        viewModelScope.launch {
+            try {
+                val added = filmRepository.addToWatchlist(
+                    authManager.getAccountId(),
+                    authManager.getSessionId(),
+                    filmId,
+                    true
+                )
+                if (added) {
+                    _watchlistMessage.value = "Added to watchlist"
+                } else {
+                    _watchlistMessage.value = "Failed to add to watchlist"
+                }
+            } catch (e: Exception) {
+                _watchlistMessage.value = "Error: ${e.message}"
+            }
+        }
+    }
+
+    fun setLoggedIn(loggedIn: Boolean) {
+        _isLoggedIn.value = loggedIn
     }
 
     internal companion object {

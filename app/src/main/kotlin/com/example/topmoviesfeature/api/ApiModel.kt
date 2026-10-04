@@ -17,3 +17,31 @@ data class ApiFilm(
 data class ApiGenre(val id: Int, val name: String)
 
 data class ApiGenreListResponse(val genres: List<ApiGenre>)
+
+data class TokenResponse(
+    @SerializedName("request_token") val requestToken: String,
+    val success: Boolean
+)
+
+data class SessionResponse(
+    @SerializedName("session_id") val sessionId: String,
+    val success: Boolean
+)
+
+data class AccountResponse(
+    val id: Long,
+    @SerializedName("username") val username: String,
+    val success: Boolean
+)
+
+data class WatchlistRequest(
+    val media_type: String = "movie",
+    val media_id: Long,
+    val watchlist: Boolean
+)
+
+data class WatchlistResponse(
+    val success: Boolean,
+    @SerializedName("status_code") val statusCode: Int? = null,
+    @SerializedName("status_message") val statusMessage: String? = null
+)

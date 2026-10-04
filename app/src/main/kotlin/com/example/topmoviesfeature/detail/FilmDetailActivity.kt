@@ -55,8 +55,19 @@ class FilmDetailActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            filmDetailViewModel.watchlist.flowWithLifecycle(lifecycle)
-                .collect { watchlist -> similarFilmAdapter.setWatchlist(watchlist) }
+            filmDetailViewModel.watchlistMessage.flowWithLifecycle(lifecycle)
+                .collect { message ->
+                    if (message != null) {
+                        Toast.makeText(this@FilmDetailActivity, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+
+        lifecycleScope.launch {
+            filmDetailViewModel.isLoggedIn.flowWithLifecycle(lifecycle)
+                .collect { isLoggedIn ->
+                    updateLoginUI(isLoggedIn)
+                }
         }
 
         setupSortMenu()
@@ -121,6 +132,13 @@ class FilmDetailActivity : AppCompatActivity() {
     private fun displayError() {
         Toast.makeText(this, R.string.connection_error, Toast.LENGTH_SHORT).show()
         binding.progress.visibility = View.GONE
+    }
+
+    private fun updateLoginUI(isLoggedIn: Boolean) {
+        // Update toolbar to show login status
+        if (!isLoggedIn) {
+            binding.toolbar.title = "Login to save watchlist"
+        }
     }
 
     companion object {

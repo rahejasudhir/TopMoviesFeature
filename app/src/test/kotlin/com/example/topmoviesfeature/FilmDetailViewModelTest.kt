@@ -4,9 +4,9 @@ import androidx.lifecycle.SavedStateHandle
 import com.example.topmoviesfeature.CoroutineTestRule
 import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.detail.FilmDetailViewModel.Companion.FILM_ID
+import com.example.topmoviesfeature.auth.AuthManager
 import com.example.topmoviesfeature.detail.FilmDetailViewModel.FilmDetailState
 import com.example.topmoviesfeature.main.FilmRepository
-import com.example.topmoviesfeature.watchlist.WatchlistManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.first
@@ -28,7 +28,7 @@ class FilmDetailViewModelTest {
 
     private val repository: FilmRepository = mock()
     private val savedStateHandle: SavedStateHandle = mock()
-    private val watchlistManager: WatchlistManager = mock()
+    private val authManager: AuthManager = mock()
 
     private lateinit var viewModel: FilmDetailViewModel
 
@@ -36,7 +36,7 @@ class FilmDetailViewModelTest {
     fun `on init sets loading state`() = runTest {
         val filmId = 2L
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(filmId)
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Loading)
     }
@@ -48,7 +48,7 @@ class FilmDetailViewModelTest {
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(filmId)
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Success(film))
@@ -60,7 +60,7 @@ class FilmDetailViewModelTest {
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(filmId)
         whenever(repository.fetchMovie(filmId)).thenAnswer { throw Exception("test_exception") }
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Error)
@@ -81,7 +81,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
         whenever(repository.fetchSimilar(filmId)).thenReturn(listOf(similar))
         whenever(repository.fetchGenres()).thenReturn(mapOf(1 to "Genre1", 2 to "Genre2"))
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
         assertThat(viewModel.similarFilm.first()).containsExactly(
             SimilarFilm(
@@ -102,7 +102,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
         whenever(repository.fetchSimilar(filmId)).thenThrow(RuntimeException("Network exception"))
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Success(film))
         assertThat(viewModel.similarFilm.first()).isEmpty()
@@ -123,7 +123,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
         whenever(repository.fetchSimilar(filmId)).thenReturn(listOf(similar))
         whenever(repository.fetchGenres()).thenThrow(RuntimeException("Network exception"))
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val similarFilms = viewModel.similarFilm.first()
@@ -140,7 +140,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
         whenever(repository.fetchSimilar(filmId)).thenThrow(RuntimeException("Network exception"))
         whenever(repository.fetchGenres()).thenThrow(RuntimeException("Network exception"))
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Success(film))
@@ -155,7 +155,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenThrow(RuntimeException("Similar fetch failed"))
         whenever(repository.fetchGenres()).thenThrow(RuntimeException("Genres fetch failed"))
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Error)
@@ -169,7 +169,7 @@ class FilmDetailViewModelTest {
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(filmId)
         whenever(repository.fetchMovie(filmId)).thenReturn(film)
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val firstSubscription = viewModel.filmDetailState.first()
@@ -195,7 +195,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(listOf(similar))
         whenever(repository.fetchGenres()).thenReturn(mapOf(1 to "Genre1", 2 to "Genre2"))
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val firstSubscription = viewModel.similarFilm.first()
@@ -224,7 +224,7 @@ class FilmDetailViewModelTest {
             mapOf(1 to "Genre1", 2 to "Genre2")
         }
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val similarFilms = viewModel.similarFilm.first()
@@ -253,7 +253,7 @@ class FilmDetailViewModelTest {
             mapOf(1 to "Action", 2 to "Comedy", 3 to "Drama")
         )
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val similarFilms = viewModel.similarFilm.first()
@@ -271,7 +271,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(emptyList())
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Success(film))
@@ -304,7 +304,7 @@ class FilmDetailViewModelTest {
             mapOf(1 to "Action")
         }
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val similarFilms = viewModel.similarFilm.first()
@@ -318,7 +318,7 @@ class FilmDetailViewModelTest {
         whenever(savedStateHandle.get<Long>(FILM_ID)).thenReturn(null)
 
         try {
-            viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+            viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
             advanceUntilIdle()
             assertThat(true).isFalse()
         } catch (e: NullPointerException) {
@@ -335,7 +335,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(emptyList())
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         assertThat(viewModel.filmDetailState.first()).isEqualTo(FilmDetailState.Success(film))
@@ -367,7 +367,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(similarList)
         whenever(repository.fetchGenres()).thenThrow(RuntimeException("Genres failed"))
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         val similarFilms = viewModel.similarFilm.first()
@@ -411,7 +411,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(films)
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         viewModel.setSortType(SortType.RATING_HIGH_TO_LOW)
@@ -456,7 +456,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(films)
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         viewModel.setSortType(SortType.TITLE_A_TO_Z)
@@ -494,7 +494,7 @@ class FilmDetailViewModelTest {
         whenever(repository.fetchSimilar(filmId)).thenReturn(films)
         whenever(repository.fetchGenres()).thenReturn(emptyMap())
 
-        viewModel = FilmDetailViewModel(savedStateHandle, repository, watchlistManager)
+        viewModel = FilmDetailViewModel(savedStateHandle, repository, authManager)
         advanceUntilIdle()
 
         viewModel.setSortType(SortType.DEFAULT)

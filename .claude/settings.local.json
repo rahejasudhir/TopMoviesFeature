@@ -32,7 +32,9 @@
       "Bash(gh repo *)",
       "Bash(gh api *)",
       "Bash(./gradlew assembleDebug)",
-      "Bash(./gradlew testReleaseUnitTest)"
+      "Bash(./gradlew testReleaseUnitTest)",
+      "Bash(cat)",
+      "Read(//tmp/**)"
     ]
   }
 }

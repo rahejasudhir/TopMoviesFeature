@@ -18,7 +18,6 @@ class SimilarFilmAdapter @Inject constructor(private val picasso: Picasso) :
 
     private var onClick: ((Long) -> Unit)? = null
     private var onWatchlistToggle: ((Long) -> Unit)? = null
-    private var watchlistedIds: Set<Long> = emptySet()
 
     fun setOnClick(onClick: (Long) -> Unit) {
         this.onClick = onClick
@@ -26,11 +25,6 @@ class SimilarFilmAdapter @Inject constructor(private val picasso: Picasso) :
 
     fun setOnWatchlistToggle(onToggle: (Long) -> Unit) {
         this.onWatchlistToggle = onToggle
-    }
-
-    fun setWatchlist(ids: Set<Long>) {
-        watchlistedIds = ids
-        notifyDataSetChanged()
     }
 
     public override fun getItem(position: Int): SimilarFilm {
@@ -64,24 +58,11 @@ class SimilarFilmAdapter @Inject constructor(private val picasso: Picasso) :
                 .transform(RoundedCornersTransformation(cornerRadius, 0))
                 .into(binding.image)
 
-            val isInWatchlist = watchlistedIds.contains(item.id)
-            updateWatchlistButton(isInWatchlist)
-
             binding.watchlistButton.setOnClickListener {
                 onWatchlistToggle?.invoke(item.id)
             }
 
             binding.root.setOnClickListener { onClick?.invoke(item.id) }
-        }
-
-        private fun updateWatchlistButton(isInWatchlist: Boolean) {
-            binding.watchlistButton.setImageResource(
-                if (isInWatchlist) {
-                    android.R.drawable.ic_dialog_info
-                } else {
-                    android.R.drawable.ic_input_get
-                }
-            )
         }
     }
 
