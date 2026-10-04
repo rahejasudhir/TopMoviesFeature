@@ -2,11 +2,10 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.topmoviesfeature"
+    package="biz.filmeroo.premier"
     >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:name=".app.PremierApp"
@@ -31,6 +30,10 @@
             android:name=".detail.FilmDetailActivity"
             android:label="@string/top_movies"
             />
+
+        <activity android:name=".main.SearchActivity" />
+
+        <activity android:name=".main.SearchActivity" />
 
     </application>
 

@@ -1,20 +1,20 @@
-package com.example.topmoviesfeature.main
+package biz.filmeroo.premier.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.topmoviesfeature.R
-import com.example.topmoviesfeature.api.ApiFilm
-import com.example.topmoviesfeature.api.FilmService
-import com.example.topmoviesfeature.databinding.ItemFilmBinding
+import biz.filmeroo.premier.R
+import biz.filmeroo.premier.api.ApiFilm
+import biz.filmeroo.premier.api.FilmService
+import biz.filmeroo.premier.databinding.ItemFilmBinding
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import javax.inject.Inject
 
 internal class FilmAdapter @Inject constructor(private val picasso: Picasso) :
-    ListAdapter<ApiFilm, FilmAdapter.Holder>(diffCallback) {
+    androidx.recyclerview.widget.ListAdapter<ApiFilm, FilmAdapter.Holder>(diffCallback) {
 
     init {
         setHasStableIds(true)
@@ -40,12 +40,14 @@ internal class FilmAdapter @Inject constructor(private val picasso: Picasso) :
             itemFilmBinding.title.text = item.title
             itemFilmBinding.overview.text = item.overview
             itemFilmBinding.rating.text = item.voteAverage
-            val cornerRadius = itemFilmBinding.root.resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-            picasso
-                .load(item.posterPath?.let(FilmService::buildImageUrl))
-                .transform(RoundedCornersTransformation(cornerRadius, 0))
-                .into(itemFilmBinding.image)
-            itemFilmBinding.root.setOnClickListener { onClick?.invoke(item.id) }
+            item.posterPath?.let {
+                val cornerRadius = itemFilmBinding.root.resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+                picasso
+                    .load(FilmService.buildImageUrl(item.posterPath))
+                    .transform(RoundedCornersTransformation(cornerRadius, 0))
+                    .into(itemFilmBinding.image)
+                itemFilmBinding.root.setOnClickListener { onClick?.invoke(item.id) }
+            }
         }
     }
 

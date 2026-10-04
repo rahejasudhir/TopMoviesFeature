@@ -1,8 +1,7 @@
-package com.example.topmoviesfeature.main
+package biz.filmeroo.premier.main
 
-import com.example.topmoviesfeature.api.ApiFilm
-import com.example.topmoviesfeature.api.FilmService
-import com.example.topmoviesfeature.api.WatchlistRequest
+import biz.filmeroo.premier.api.ApiFilm
+import biz.filmeroo.premier.api.FilmService
 import javax.inject.Inject
 
 internal class FilmRepository @Inject constructor(private val filmService: FilmService) {
@@ -15,65 +14,7 @@ internal class FilmRepository @Inject constructor(private val filmService: FilmS
         return filmService.movie(id)
     }
 
-    suspend fun fetchSimilar(id: Long): List<ApiFilm> {
-        return filmService.similar(id).results
-    }
-
-    suspend fun fetchGenres(): Map<Int, String> {
-        return filmService.genres().genres.associate { it.id to it.name }
-    }
-
-    suspend fun getRequestToken(): String {
-        return filmService.getRequestToken().requestToken
-    }
-
-    suspend fun createSession(requestToken: String): String {
-        return filmService.createSession(requestToken).sessionId
-    }
-
-    suspend fun getAccount(sessionId: String): Pair<Long, String> {
-        val account = filmService.getAccount(sessionId)
-        return account.id to account.username
-    }
-
-    suspend fun addToWatchlist(
-        accountId: Long,
-        sessionId: String,
-        filmId: Long,
-        add: Boolean
-    ): Boolean {
-        return filmService.addToWatchlist(
-            accountId,
-            sessionId,
-            WatchlistRequest(media_id = filmId, watchlist = add)
-        ).success
-    }
-
-    suspend fun createGuestSession(): String {
-        return filmService.createGuestSession().guestSessionId
-    }
-
-    suspend fun rateMovie(
-        guestSessionId: String,
-        filmId: Long,
-        rating: Float
-    ): Boolean {
-        return filmService.rateMovie(
-            filmId,
-            guestSessionId,
-            com.example.topmoviesfeature.api.RatingRequest(rating)
-        ).success
-    }
-
-    suspend fun deleteRating(
-        guestSessionId: String,
-        filmId: Long
-    ): Boolean {
-        return filmService.deleteRating(filmId, guestSessionId).success
-    }
-
-    suspend fun getGuestRatings(guestSessionId: String): Map<Long, Float> {
-        return filmService.getGuestRatings(guestSessionId).results
-            .associate { it.id to it.rating }
+    suspend fun search(query: String): List<ApiFilm> {
+        return filmService.search(query).results
     }
 }

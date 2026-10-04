@@ -1,8 +1,8 @@
-package com.example.topmoviesfeature.main
+package biz.filmeroo.premier.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.topmoviesfeature.api.ApiFilm
+import biz.filmeroo.premier.api.ApiFilm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +13,7 @@ import javax.inject.Inject
 @HiltViewModel
 internal class FilmViewModel @Inject constructor(
     filmRepository: FilmRepository
-) : ViewModel() {
+) : androidx.lifecycle.ViewModel() {
 
     private val _filmState = MutableStateFlow<FilmState>(FilmState.Loading)
     val filmState: Flow<FilmState> = _filmState

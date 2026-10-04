@@ -1,10 +1,9 @@
-package com.example.topmoviesfeature.app
+package biz.filmeroo.premier.app
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.content.res.Resources
-import com.example.topmoviesfeature.R
-import com.example.topmoviesfeature.api.FilmService
+import biz.filmeroo.premier.R
+import biz.filmeroo.premier.api.FilmService
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import dagger.Module
@@ -60,10 +59,4 @@ object AppModule {
     @Provides
     @Singleton
     fun providePicasso(): Picasso = Picasso.get()
-
-    @Provides
-    @Singleton
-    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
-        return context.getSharedPreferences("topmovies_prefs", Context.MODE_PRIVATE)
-    }
 }

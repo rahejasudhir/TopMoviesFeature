@@ -1,4 +1,4 @@
-package com.example.topmoviesfeature
+package biz.filmeroo.com.example.topmoviesfeature
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

@@ -1,6 +1,8 @@
-package com.example.topmoviesfeature.main
+package biz.filmeroo.premier.main
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -11,16 +13,16 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.topmoviesfeature.R
-import com.example.topmoviesfeature.api.ApiFilm
-import com.example.topmoviesfeature.databinding.ActivityMainBinding
-import com.example.topmoviesfeature.detail.FilmDetailActivity
+import biz.filmeroo.premier.R
+import biz.filmeroo.premier.api.ApiFilm
+import biz.filmeroo.premier.databinding.ActivityMainBinding
+import biz.filmeroo.premier.detail.FilmDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity : androidx.appcompat.app.AppCompatActivity() {
 
     @Inject
     internal lateinit var adapter: FilmAdapter
@@ -50,6 +52,11 @@ class MainActivity : AppCompatActivity() {
         }
         binding.recycler.addItemDecoration(dividerItemDecoration)
         adapter.setOnClick { id -> FilmDetailActivity.start(this, id) }
+        binding.search.searchField.inputType = InputType.TYPE_NULL
+
+        binding.search.searchField.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
+        }
     }
 
     private fun updateState(filmState: FilmViewModel.FilmState) {
