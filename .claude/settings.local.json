@@ -41,7 +41,8 @@
       "Bash(./gradlew assembleDebug -x lint)",
       "Bash(./gradlew testDebug -k SearchViewModel)",
       "Bash(./gradlew testDebug)",
-      "Bash(./gradlew testDebugUnitTest --info)"
+      "Bash(./gradlew testDebugUnitTest --info)",
+      "Bash(./gradlew assembleDebug -x lint testDebugUnitTest)"
     ]
   }
 }
