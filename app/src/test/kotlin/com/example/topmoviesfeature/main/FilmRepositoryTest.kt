@@ -1,9 +1,9 @@
 package biz.filmeroo.com.example.topmoviesfeature.main
 
 import biz.filmeroo.com.example.topmoviesfeature.CoroutineTestRule
+import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
 import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.api.FilmService
-import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
 import com.example.topmoviesfeature.main.FilmRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest

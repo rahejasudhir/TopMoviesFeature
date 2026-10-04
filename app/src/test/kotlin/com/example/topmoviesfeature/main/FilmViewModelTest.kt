@@ -1,10 +1,10 @@
 package biz.filmeroo.com.example.topmoviesfeature.main
 
 import biz.filmeroo.com.example.topmoviesfeature.CoroutineTestRule
-import com.example.topmoviesfeature.main.FilmViewModel.FilmState
 import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
 import com.example.topmoviesfeature.main.FilmRepository
 import com.example.topmoviesfeature.main.FilmViewModel
+import com.example.topmoviesfeature.main.FilmViewModel.FilmState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher

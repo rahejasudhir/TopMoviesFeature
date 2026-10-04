@@ -55,7 +55,11 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
         binding.search.searchField.inputType = InputType.TYPE_NULL
 
         binding.search.searchField.setOnClickListener {
-            startActivity(Intent(this, SearchActivity::class.java))
+            try {
+                startActivity(Intent(this, SearchActivity::class.java))
+            } catch (e: Exception) {
+                Toast.makeText(this, "Error opening search: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

@@ -34,6 +34,12 @@ class SearchActivity : androidx.appcompat.app.AppCompatActivity() {
                 showResults(it)
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.isLoading.collectLatest { isLoading ->
+                binding.progressBar.visibility = if (isLoading) android.view.View.VISIBLE else android.view.View.GONE
+            }
+        }
     }
 
     private fun setupView() {

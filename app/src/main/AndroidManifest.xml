@@ -30,7 +30,10 @@
             android:label="@string/top_movies"
             />
 
-        <activity android:name=".main.SearchActivity" />
+        <activity
+            android:name=".main.SearchActivity"
+            android:exported="true"
+            />
 
     </application>
 
