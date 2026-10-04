@@ -94,6 +94,8 @@ class SearchActivity : androidx.appcompat.app.AppCompatActivity() {
 
     private fun showResults(results: List<ApiFilm>) {
         adapter.submitList(results)
-        binding.recycler.scrollToPosition(0)
+        binding.recycler.post {
+            binding.recycler.scrollToPosition(0)
+        }
     }
 }
