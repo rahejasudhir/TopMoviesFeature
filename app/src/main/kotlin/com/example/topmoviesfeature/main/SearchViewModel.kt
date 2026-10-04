@@ -25,7 +25,7 @@ internal class SearchViewModel @Inject constructor(
 
     private val _searchQuery = MutableStateFlow("")
 
-    private val _searchResults = MutableStateFlow<List<ApiFilm>?>(null)
+    private val _searchResults = MutableStateFlow(emptyList<ApiFilm>())
     val searchResults = _searchResults.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)

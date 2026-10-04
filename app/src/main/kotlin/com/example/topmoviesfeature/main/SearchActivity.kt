@@ -59,7 +59,7 @@ class SearchActivity : androidx.appcompat.app.AppCompatActivity() {
         })
     }
 
-    private fun showResults(results: List<ApiFilm>?) {
+    private fun showResults(results: List<ApiFilm>) {
         adapter.submitList(results)
     }
 }
