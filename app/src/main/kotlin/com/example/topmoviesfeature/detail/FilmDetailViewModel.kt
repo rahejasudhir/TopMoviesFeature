@@ -15,22 +15,33 @@ import javax.inject.Inject
 @HiltViewModel
 internal class FilmDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    filmRepository: FilmRepository
+    private val filmRepository: FilmRepository
 ) : ViewModel() {
 
     private val filmId: Long = savedStateHandle.get<Long>(FILM_ID)!!
 
     private val _filmDetailState = MutableStateFlow<FilmDetailState>(FilmDetailState.Loading)
+    private val _similarFilms = MutableStateFlow(emptyList<ApiFilm>())
 
     val filmDetailState = _filmDetailState.asStateFlow()
+    val similarFilms = _similarFilms.asStateFlow()
 
     init {
         viewModelScope.launch {
             try {
-                val films = filmRepository.fetchMovie(filmId)
-                _filmDetailState.update { FilmDetailState.Success(films) }
+                val film = filmRepository.fetchMovie(filmId)
+                _filmDetailState.update { FilmDetailState.Success(film) }
             } catch (e: Exception) {
                 _filmDetailState.update { FilmDetailState.Error }
+            }
+        }
+
+        viewModelScope.launch {
+            try {
+                val similar = filmRepository.similar(filmId, page = 1)
+                _similarFilms.value = similar.take(6)
+            } catch (e: Exception) {
+                _similarFilms.value = emptyList()
             }
         }
     }

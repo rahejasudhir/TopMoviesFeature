@@ -7,13 +7,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.topmoviesfeature.R
 import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.api.FilmService
 import com.example.topmoviesfeature.databinding.ActivityDetailBinding
 import com.example.topmoviesfeature.detail.FilmDetailViewModel.FilmDetailState
+import com.example.topmoviesfeature.main.FilmAdapter
 import com.example.topmoviesfeature.main.SimilarMoviesActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
@@ -25,6 +28,9 @@ class FilmDetailActivity : AppCompatActivity() {
 
     @Inject
     internal lateinit var picasso: Picasso
+
+    @Inject
+    internal lateinit var similarAdapter: FilmAdapter
 
     private lateinit var binding: ActivityDetailBinding
 
@@ -38,8 +44,26 @@ class FilmDetailActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.toolbar.setNavigationOnClickListener { finish() }
 
+        setupSimilarMoviesRecycler()
+
         lifecycleScope.launch {
             filmDetailViewModel.filmDetailState.flowWithLifecycle(lifecycle).collect(::updateState)
+        }
+
+        lifecycleScope.launch {
+            filmDetailViewModel.similarFilms.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect { films ->
+                similarAdapter.submitList(films)
+            }
+        }
+    }
+
+    private fun setupSimilarMoviesRecycler() {
+        binding.similarRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.similarRecycler.adapter = similarAdapter
+        similarAdapter.setOnClick { id ->
+            startActivity(Intent(this, FilmDetailActivity::class.java).apply {
+                putExtra(FilmDetailViewModel.FILM_ID, id)
+            })
         }
     }
 
@@ -58,7 +82,7 @@ class FilmDetailActivity : AppCompatActivity() {
         binding.filmTitle.text = movie.title
         binding.filmOverview.text = movie.overview
 
-        binding.viewAllSimilar.setOnClickListener {
+        binding.viewAllBtn.setOnClickListener {
             SimilarMoviesActivity.start(this, movie.id)
         }
 
