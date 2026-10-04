@@ -102,7 +102,9 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
             is FilmViewModel.FilmState.Loading -> {
                 binding.progress.visibility = View.VISIBLE
             }
-            is FilmViewModel.FilmState.Success -> displayResults(filmState.films)
+            is FilmViewModel.FilmState.Success -> {
+                binding.progress.visibility = View.GONE
+            }
             FilmViewModel.FilmState.Error -> displayError()
         }
     }
