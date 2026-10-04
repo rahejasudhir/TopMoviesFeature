@@ -35,6 +35,11 @@
             android:exported="true"
             />
 
+        <activity
+            android:name=".main.SimilarMoviesActivity"
+            android:exported="true"
+            />
+
     </application>
 
 </manifest>

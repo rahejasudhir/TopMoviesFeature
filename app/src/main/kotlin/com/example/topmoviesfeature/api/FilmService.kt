@@ -20,6 +20,12 @@ interface FilmService {
         @Query("page") page: Int = 1
     ): ApiFilmListResponse
 
+    @GET("movie/{movie_id}/similar")
+    suspend fun similar(
+        @Path("movie_id") movieId: Long,
+        @Query("page") page: Int = 1
+    ): ApiFilmListResponse
+
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"
         const val API_KEY_PARAM = "api_key"

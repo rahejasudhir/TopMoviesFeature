@@ -17,4 +17,8 @@ internal class FilmRepository @Inject constructor(private val filmService: FilmS
     suspend fun search(query: String, page: Int = 1): List<ApiFilm> {
         return filmService.search(query, page).results
     }
+
+    suspend fun similar(movieId: Long, page: Int = 1): List<ApiFilm> {
+        return filmService.similar(movieId, page).results
+    }
 }

@@ -14,6 +14,7 @@ import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.api.FilmService
 import com.example.topmoviesfeature.databinding.ActivityDetailBinding
 import com.example.topmoviesfeature.detail.FilmDetailViewModel.FilmDetailState
+import com.example.topmoviesfeature.main.SimilarMoviesActivity
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -56,6 +57,10 @@ class FilmDetailActivity : AppCompatActivity() {
         }
         binding.filmTitle.text = movie.title
         binding.filmOverview.text = movie.overview
+
+        binding.viewAllSimilar.setOnClickListener {
+            SimilarMoviesActivity.start(this, movie.id)
+        }
 
         binding.progress.visibility = View.GONE
     }
