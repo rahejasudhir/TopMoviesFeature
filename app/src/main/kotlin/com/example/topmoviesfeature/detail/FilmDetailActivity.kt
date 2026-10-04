@@ -34,6 +34,9 @@ class FilmDetailActivity : AppCompatActivity() {
 
     private val filmDetailViewModel by viewModels<FilmDetailViewModel>()
 
+    private var currentFilmId: Long = 0L
+    private var isUserInteracting = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -44,6 +47,8 @@ class FilmDetailActivity : AppCompatActivity() {
         binding.similarRecyclerview.adapter = similarFilmAdapter
         similarFilmAdapter.setOnClick { id -> start(this, id) }
         similarFilmAdapter.setOnWatchlistToggle { id -> filmDetailViewModel.toggleWatchlist(id) }
+
+        setupRatingBar()
 
         lifecycleScope.launch {
             filmDetailViewModel.filmDetailState.flowWithLifecycle(lifecycle).collect(::updateState)
@@ -132,12 +137,37 @@ class FilmDetailActivity : AppCompatActivity() {
 
         binding.progress.visibility = View.GONE
 
-        setupRatingUI(movie.id)
+        currentFilmId = movie.id
     }
 
-    private fun setupRatingUI(filmId: Long) {
-        // This will be enhanced in Phase 8 with actual star rating widget
-        Toast.makeText(this, "Rate movies coming soon!", Toast.LENGTH_SHORT).show()
+    private fun setupRatingBar() {
+        binding.ratingBar.setOnRatingBarChangeListener { _, rating, fromUser ->
+            if (fromUser && currentFilmId > 0) {
+                isUserInteracting = true
+                filmDetailViewModel.rateMovie(currentFilmId, rating)
+                updateRatingText(rating)
+            }
+        }
+
+        lifecycleScope.launch {
+            filmDetailViewModel.currentRating.flowWithLifecycle(lifecycle)
+                .collect { rating ->
+                    if (!isUserInteracting) {
+                        binding.ratingBar.rating = rating
+                        updateRatingText(rating)
+                    }
+                    isUserInteracting = false
+                }
+        }
+    }
+
+    private fun updateRatingText(rating: Float) {
+        if (rating > 0) {
+            binding.ratingText.text = "Your rating: ${String.format("%.1f", rating)}/10"
+            binding.ratingText.visibility = View.VISIBLE
+        } else {
+            binding.ratingText.visibility = View.GONE
+        }
     }
 
     private fun displaySimilarFilms(films: List<SimilarFilm>) {

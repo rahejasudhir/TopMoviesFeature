@@ -66,6 +66,48 @@
                 app:layout_constraintTop_toBottomOf="@id/film_title"
                 tools:text="Movie overview" />
 
+            <LinearLayout
+                android:id="@+id/rating_container"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:padding="12dp"
+                android:background="@drawable/rating_bg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/film_overview">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/rate_this_movie"
+                    android:textAppearance="@style/Filmeroo.TextAppearance.Body.Small.Bold"
+                    android:layout_marginBottom="8dp" />
+
+                <RatingBar
+                    android:id="@+id/rating_bar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:numStars="10"
+                    android:stepSize="0.5"
+                    android:rating="0"
+                    android:scaleX="0.8"
+                    android:scaleY="0.8"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp" />
+
+                <TextView
+                    android:id="@+id/rating_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textAppearance="@style/Filmeroo.TextAppearance.Body.XSmall"
+                    android:textColor="@android:color/darker_gray"
+                    tools:text="Rating: 8.5/10" />
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/similar_title"
                 android:layout_width="0dp"
@@ -77,7 +119,7 @@
                 android:textAppearance="@style/Filmeroo.TextAppearance.Heading.Small"
                 app:layout_constraintEnd_toStartOf="@+id/view_all"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/film_overview" />
+                app:layout_constraintTop_toBottomOf="@id/rating_container" />
 
 
             <TextView
