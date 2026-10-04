@@ -28,7 +28,7 @@ internal class FilmViewModel @Inject constructor(
             is FilmState.Success -> sortResults(state.films, sortBy)
             else -> emptyList()
         }
-    }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+    }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
     init {
         viewModelScope.launch {
