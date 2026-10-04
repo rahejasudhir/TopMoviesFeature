@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
 import android.view.View
+import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +41,11 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
                 updateState(it)
             }
         }
+        lifecycleScope.launch {
+            filmViewModel.films.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect { films ->
+                displayResults(films)
+            }
+        }
     }
 
     private fun setupView() {
@@ -61,6 +67,34 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
                 Toast.makeText(this, "Error opening search: ${e.localizedMessage}", Toast.LENGTH_SHORT).show()
             }
         }
+
+        binding.search.filter.setOnClickListener {
+            showSortMenu(it)
+        }
+    }
+
+    private fun showSortMenu(view: View) {
+        val popupMenu = PopupMenu(this, view)
+        popupMenu.menu.add(0, 0, 0, "No Sort")
+        popupMenu.menu.add(0, 1, 1, "A - Z")
+        popupMenu.menu.add(0, 2, 2, "Z - A")
+        popupMenu.menu.add(0, 3, 3, "Lowest to Highest Rating")
+        popupMenu.menu.add(0, 4, 4, "Highest to Lowest Rating")
+
+        popupMenu.setOnMenuItemClickListener { item ->
+            val sortBy = when (item.itemId) {
+                0 -> SortBy.NONE
+                1 -> SortBy.TITLE_ASC
+                2 -> SortBy.TITLE_DESC
+                3 -> SortBy.RATING_ASC
+                4 -> SortBy.RATING_DESC
+                else -> SortBy.NONE
+            }
+            filmViewModel.updateSort(sortBy)
+            true
+        }
+
+        popupMenu.show()
     }
 
     private fun updateState(filmState: FilmViewModel.FilmState) {
@@ -75,7 +109,6 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
 
     private fun displayResults(results: List<ApiFilm>) {
         adapter.submitList(results)
-        binding.progress.visibility = View.GONE
     }
 
     private fun displayError() {

@@ -34,7 +34,14 @@
       "Bash(./gradlew assembleDebug)",
       "Bash(./gradlew testReleaseUnitTest)",
       "Bash(cat)",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(git checkout *)",
+      "Bash(./gradlew spotlessApply)",
+      "Bash(./gradlew compileDebugKotlin)",
+      "Bash(./gradlew assembleDebug -x lint)",
+      "Bash(./gradlew testDebug -k SearchViewModel)",
+      "Bash(./gradlew testDebug)",
+      "Bash(./gradlew testDebugUnitTest --info)"
     ]
   }
 }
