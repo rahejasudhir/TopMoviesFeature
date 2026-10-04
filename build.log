@@ -1,0 +1,129 @@
+Configuration 'spotless-1972452444' was resolved during configuration time.
+This is a build performance and scalability issue.
+See https://github.com/gradle/gradle/issues/2298
+Run with --info for a stacktrace.
+> Task :assemble UP-TO-DATE
+> Task :spotlessCheck UP-TO-DATE
+> Task :check UP-TO-DATE
+> Task :build UP-TO-DATE
+> Task :app:installGitHook NO-SOURCE
+> Task :app:preBuild UP-TO-DATE
+> Task :app:preDebugBuild UP-TO-DATE
+> Task :app:mergeDebugNativeDebugMetadata NO-SOURCE
+> Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :app:dataBindingMergeDependencyArtifactsDebug UP-TO-DATE
+> Task :app:generateDebugResValues UP-TO-DATE
+> Task :app:generateDebugResources UP-TO-DATE
+> Task :app:mergeDebugResources UP-TO-DATE
+> Task :app:packageDebugResources UP-TO-DATE
+> Task :app:parseDebugLocalResources UP-TO-DATE
+> Task :app:dataBindingGenBaseClassesDebug UP-TO-DATE
+> Task :app:checkDebugAarMetadata UP-TO-DATE
+> Task :app:mapDebugSourceSetPaths UP-TO-DATE
+> Task :app:createDebugCompatibleScreenManifests UP-TO-DATE
+> Task :app:extractDeepLinksDebug UP-TO-DATE
+
+> Task :app:processDebugMainManifest
+package="biz.filmeroo.premier" found in source AndroidManifest.xml: /Users/sudhirrahejamacair/AndroidStudioProjects/CarouselRepo/app/src/main/AndroidManifest.xml.
+Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+Recommendation: remove package="biz.filmeroo.premier" from the source AndroidManifest.xml: /Users/sudhirrahejamacair/AndroidStudioProjects/CarouselRepo/app/src/main/AndroidManifest.xml.
+
+> Task :app:processDebugManifest
+> Task :app:javaPreCompileDebug UP-TO-DATE
+> Task :app:mergeDebugShaders UP-TO-DATE
+> Task :app:compileDebugShaders NO-SOURCE
+> Task :app:generateDebugAssets UP-TO-DATE
+> Task :app:mergeDebugAssets UP-TO-DATE
+> Task :app:compressDebugAssets UP-TO-DATE
+> Task :app:desugarDebugFileDependencies
+> Task :app:checkDebugDuplicateClasses UP-TO-DATE
+> Task :app:mergeDebugStartupProfile UP-TO-DATE
+> Task :app:mergeDebugJniLibFolders UP-TO-DATE
+> Task :app:mergeDebugNativeLibs NO-SOURCE
+> Task :app:stripDebugDebugSymbols NO-SOURCE
+> Task :app:validateSigningDebug UP-TO-DATE
+> Task :app:writeDebugAppMetadata UP-TO-DATE
+> Task :app:mergeLibDexDebug
+> Task :app:writeDebugSigningConfigVersions
+> Task :app:buildKotlinToolingMetadata UP-TO-DATE
+> Task :app:preReleaseBuild UP-TO-DATE
+> Task :app:dataBindingMergeDependencyArtifactsRelease UP-TO-DATE
+> Task :app:generateReleaseResValues UP-TO-DATE
+> Task :app:generateReleaseResources
+> Task :app:packageReleaseResources
+> Task :app:mergeReleaseResources
+> Task :app:checkReleaseAarMetadata UP-TO-DATE
+> Task :app:mapReleaseSourceSetPaths
+> Task :app:parseReleaseLocalResources
+> Task :app:createReleaseCompatibleScreenManifests UP-TO-DATE
+> Task :app:dataBindingGenBaseClassesRelease
+> Task :app:extractDeepLinksRelease UP-TO-DATE
+> Task :app:processReleaseMainManifest UP-TO-DATE
+> Task :app:processReleaseManifest UP-TO-DATE
+> Task :app:processReleaseManifestForPackage UP-TO-DATE
+> Task :app:javaPreCompileRelease UP-TO-DATE
+> Task :app:extractProguardFiles UP-TO-DATE
+> Task :app:mergeReleaseJniLibFolders
+> Task :app:mergeReleaseNativeLibs NO-SOURCE
+> Task :app:stripReleaseDebugSymbols NO-SOURCE
+> Task :app:extractReleaseNativeSymbolTables NO-SOURCE
+> Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+> Task :app:desugarReleaseFileDependencies
+> Task :app:mergeReleaseStartupProfile
+> Task :app:checkReleaseDuplicateClasses
+> Task :app:processDebugManifestForPackage
+> Task :app:mergeReleaseArtProfile
+> Task :app:processReleaseResources
+> Task :app:processDebugResources
+> Task :app:mergeExtDexDebug
+> Task :app:kaptGenerateStubsDebugKotlin UP-TO-DATE
+> Task :app:kaptDebugKotlin UP-TO-DATE
+> Task :app:compileDebugKotlin UP-TO-DATE
+> Task :app:compileDebugJavaWithJavac UP-TO-DATE
+> Task :app:hiltAggregateDepsDebug UP-TO-DATE
+
+> Task :app:hiltJavaCompileDebug FAILED
+/Users/sudhirrahejamacair/AndroidStudioProjects/CarouselRepo/app/build/generated/hilt/component_sources/debug/biz/filmeroo/premier/app/PremierApp_HiltComponents.java:137: error: [Dagger/MissingBinding] com.squareup.picasso.Picasso cannot be provided without an @Inject constructor or an @Provides-annotated method.
+  public abstract static class SingletonC implements PremierApp_GeneratedInjector,
+                         ^
+  
+      com.squareup.picasso.Picasso is injected at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ActivityC] biz.filmeroo.premier.detail.FilmDetailActivity.picasso
+      biz.filmeroo.premier.detail.FilmDetailActivity is injected at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ActivityC] biz.filmeroo.premier.detail.FilmDetailActivity_GeneratedInjector.injectFilmDetailActivity(biz.filmeroo.premier.detail.FilmDetailActivity) [biz.filmeroo.premier.app.PremierApp_HiltComponents.SingletonC → biz.filmeroo.premier.app.PremierApp_HiltComponents.ActivityRetainedC → biz.filmeroo.premier.app.PremierApp_HiltComponents.ActivityC]
+  It is also requested at:
+      biz.filmeroo.premier.detail.SimilarFilmAdapter(picasso)
+/Users/sudhirrahejamacair/AndroidStudioProjects/CarouselRepo/app/build/generated/hilt/component_sources/debug/biz/filmeroo/premier/app/PremierApp_HiltComponents.java:137: error: [Dagger/MissingBinding] biz.filmeroo.premier.api.FilmService cannot be provided without an @Provides-annotated method.
+  public abstract static class SingletonC implements PremierApp_GeneratedInjector,
+                         ^
+  
+      biz.filmeroo.premier.api.FilmService is injected at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ViewModelC] biz.filmeroo.premier.main.FilmRepository(filmService)
+      biz.filmeroo.premier.main.FilmRepository is injected at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ViewModelC] biz.filmeroo.premier.main.FilmViewModel(filmRepository)
+      biz.filmeroo.premier.main.FilmViewModel is injected at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ViewModelC] biz.filmeroo.premier.main.FilmViewModel_HiltModules.BindsModule.binds(arg0)
+      @dagger.hilt.android.internal.lifecycle.HiltViewModelMap java.util.Map<java.lang.Class<?>,javax.inject.Provider<androidx.lifecycle.ViewModel>> is requested at
+          [biz.filmeroo.premier.app.PremierApp_HiltComponents.ViewModelC] dagger.hilt.android.internal.lifecycle.HiltViewModelFactory.ViewModelFactoriesEntryPoint.getHiltViewModelMap() [biz.filmeroo.premier.app.PremierApp_HiltComponents.SingletonC → biz.filmeroo.premier.app.PremierApp_HiltComponents.ActivityRetainedC → biz.filmeroo.premier.app.PremierApp_HiltComponents.ViewModelC]
+2 errors
+
+> Task :app:mergeExtDexRelease
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':app:hiltJavaCompileDebug'.
+> Compilation failed; see the compiler error output for details.
+
+* Try:
+> Run with --info option to get more log output.
+> Run with --scan to get full insights.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/8.9/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 10s
+58 actionable tasks: 22 executed, 36 up-to-date

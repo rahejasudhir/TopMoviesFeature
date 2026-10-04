@@ -1,0 +1,9 @@
+<resources>
+    <dimen name="gutter">16dp</dimen>
+    <dimen name="gutter_mini">4dp</dimen>
+    <dimen name="image_width">92dp</dimen>
+    <dimen name="image_height">134dp</dimen>
+    <dimen name="image_corner_radius">4dp</dimen>
+    <dimen name="similar_image_width">150dp</dimen>
+    <dimen name="similar_image_height">200dp</dimen>
+</resources>

@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Premier</string>
+    <string name="connection_error">Something went wrong!</string>
+    <string name="top_movies">Top Movies</string>
+    <string name="profile">Profile</string>
+    <string name="similar_movies">Similar movies</string>
+    <string name="view_all">View all</string>
+</resources>

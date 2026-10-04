@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./gradlew test *)",
+      "Bash(./gradlew testDebugUnitTest)",
+      "Bash(./gradlew compileDebugUnitTestKotlin)",
+      "Bash(./gradlew clean *)",
+      "Bash(./gradlew build *)",
+      "Bash(grep -r \"^import.*\\\\*$\" /Users/sudhirrahejamacair/AndroidStudioProjects/CarouselRepo/app/src/main/kotlin --include=\"*.kt\")",
+      "Bash(./gradlew spotlessKotlinCheck --info)",
+      "Bash(./gradlew :app:spotlessApply)",
+      "Bash(grep -E \"\\\\.\\(kt|java\\)$\")",
+      "Bash(./gradlew :app:compileDebugKotlin -q)",
+      "Bash(./gradlew :app:compileDebugKotlin)",
+      "Bash(./gradlew :app:generateDebugResources -q)",
+      "Bash(./gradlew :app:cleanTest :app:test)",
+      "Bash(./gradlew :app:testDebugUnitTest)",
+      "Bash(./gradlew :app:testDebugUnitTest --no-build-cache)",
+      "Bash(git init *)",
+      "Bash(git config *)",
+      "Bash(git add *)",
+      "Bash(git commit *)"
+    ]
+  }
+}
