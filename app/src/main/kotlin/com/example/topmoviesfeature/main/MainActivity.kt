@@ -73,6 +73,16 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
         binding.search.filter.setOnClickListener {
             showSortMenu(it)
         }
+
+        binding.loadMoreButton.setOnClickListener {
+            filmViewModel.loadMore()
+        }
+
+        lifecycleScope.launch {
+            filmViewModel.hasMore.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collect { hasMore ->
+                binding.loadMoreButton.visibility = if (hasMore) View.VISIBLE else View.GONE
+            }
+        }
     }
 
     private fun showSortMenu(view: View) {

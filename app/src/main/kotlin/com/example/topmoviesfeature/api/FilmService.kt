@@ -7,13 +7,18 @@ import retrofit2.http.Query
 interface FilmService {
 
     @GET("movie/top_rated")
-    suspend fun topRated(): ApiFilmListResponse
+    suspend fun topRated(
+        @Query("page") page: Int = 1
+    ): ApiFilmListResponse
 
     @GET("movie/{movie_id}")
     suspend fun movie(@Path("movie_id") movieId: Long): ApiFilm
 
     @GET("search/movie")
-    suspend fun search(@Query("query") query: String): ApiFilmListResponse
+    suspend fun search(
+        @Query("query") query: String,
+        @Query("page") page: Int = 1
+    ): ApiFilmListResponse
 
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"

@@ -31,6 +31,8 @@ internal class SearchViewModel @Inject constructor(
     private val _searchResults = MutableStateFlow(emptyList<ApiFilm>())
 
     private val _sortBy = MutableStateFlow(SortBy.NONE)
+    private val _currentPage = MutableStateFlow(1)
+    private val _hasMore = MutableStateFlow(true)
 
     val searchResults = combine(_searchResults, _sortBy) { results, sortBy ->
         sortResults(results, sortBy)
@@ -38,6 +40,7 @@ internal class SearchViewModel @Inject constructor(
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
+    val hasMore = _hasMore.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -70,10 +73,31 @@ internal class SearchViewModel @Inject constructor(
 
     fun updateQuery(query: String) {
         _searchQuery.value = query
+        _currentPage.value = 1
+        _searchResults.value = emptyList()
     }
 
     fun updateSort(sortBy: SortBy) {
         _sortBy.value = sortBy
+    }
+
+    fun loadMore() {
+        if (!_hasMore.value || _isLoading.value) return
+
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val nextPage = _currentPage.value + 1
+                val moreResults = filmRepository.search(_searchQuery.value, page = nextPage)
+
+                _searchResults.value = _searchResults.value + moreResults
+                _currentPage.value = nextPage
+                _hasMore.value = moreResults.isNotEmpty()
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _isLoading.value = false
+            }
+        }
     }
 
     private fun sortResults(results: List<ApiFilm>, sortBy: SortBy): List<ApiFilm> = when (sortBy) {

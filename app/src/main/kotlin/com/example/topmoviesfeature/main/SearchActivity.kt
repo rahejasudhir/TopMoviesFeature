@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.PopupMenu
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.topmoviesfeature.api.ApiFilm
@@ -67,6 +69,16 @@ class SearchActivity : androidx.appcompat.app.AppCompatActivity() {
 
         binding.search.filter.setOnClickListener {
             showSortMenu(it)
+        }
+
+        binding.loadMoreButton.setOnClickListener {
+            viewModel.loadMore()
+        }
+
+        lifecycleScope.launch {
+            viewModel.hasMore.flowWithLifecycle(lifecycle, Lifecycle.State.STARTED).collectLatest { hasMore ->
+                binding.loadMoreButton.visibility = if (hasMore) View.VISIBLE else View.GONE
+            }
         }
     }
 

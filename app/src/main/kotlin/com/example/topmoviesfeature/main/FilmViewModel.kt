@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -15,28 +16,59 @@ import javax.inject.Inject
 
 @HiltViewModel
 internal class FilmViewModel @Inject constructor(
-    filmRepository: FilmRepository
+    private val filmRepository: FilmRepository
 ) : androidx.lifecycle.ViewModel() {
 
     private val _filmState = MutableStateFlow<FilmState>(FilmState.Loading)
     val filmState: Flow<FilmState> = _filmState
 
     private val _sortBy = MutableStateFlow(SortBy.NONE)
+    private val _currentPage = MutableStateFlow(1)
+    private val _allFilms = MutableStateFlow(emptyList<ApiFilm>())
+    private val _isLoading = MutableStateFlow(false)
+    private val _hasMore = MutableStateFlow(true)
 
-    val films = combine(_filmState, _sortBy) { state, sortBy ->
-        when (state) {
-            is FilmState.Success -> sortResults(state.films, sortBy)
-            else -> emptyList()
-        }
+    val films = combine(_allFilms, _sortBy) { films, sortBy ->
+        sortResults(films, sortBy)
     }.stateIn(viewModelScope, SharingStarted.Eagerly, emptyList())
 
+    val hasMore = _hasMore.asStateFlow()
+    val isLoading = _isLoading.asStateFlow()
+
     init {
+        loadInitialFilms()
+    }
+
+    private fun loadInitialFilms() {
         viewModelScope.launch {
             try {
-                val films = filmRepository.fetchTopRated()
+                _filmState.update { FilmState.Loading }
+                val films = filmRepository.fetchTopRated(page = 1)
+                _allFilms.value = films
+                _currentPage.value = 1
+                _hasMore.value = films.isNotEmpty()
                 _filmState.update { FilmState.Success(films) }
             } catch (e: Exception) {
                 _filmState.update { FilmState.Error }
+            }
+        }
+    }
+
+    fun loadMore() {
+        if (!_hasMore.value || _isLoading.value) return
+
+        viewModelScope.launch {
+            try {
+                _isLoading.value = true
+                val nextPage = _currentPage.value + 1
+                val moreFilms = filmRepository.fetchTopRated(page = nextPage)
+
+                _allFilms.value = _allFilms.value + moreFilms
+                _currentPage.value = nextPage
+                _hasMore.value = moreFilms.isNotEmpty()
+                _isLoading.value = false
+            } catch (e: Exception) {
+                _isLoading.value = false
             }
         }
     }
