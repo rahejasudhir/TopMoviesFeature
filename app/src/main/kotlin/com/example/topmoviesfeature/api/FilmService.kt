@@ -1,6 +1,7 @@
 package com.example.topmoviesfeature.api
 
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -37,6 +38,27 @@ interface FilmService {
         @Query("session_id") sessionId: String,
         @Body request: WatchlistRequest
     ): WatchlistResponse
+
+    @POST("authentication/guest_session/new")
+    suspend fun createGuestSession(): GuestSessionResponse
+
+    @POST("movie/{movie_id}/rating")
+    suspend fun rateMovie(
+        @Path("movie_id") movieId: Long,
+        @Query("guest_session_id") guestSessionId: String,
+        @Body request: RatingRequest
+    ): RatingResponse
+
+    @GET("guest_session/{guest_session_id}/rated/movies")
+    suspend fun getGuestRatings(
+        @Path("guest_session_id") guestSessionId: String
+    ): RatedMoviesResponse
+
+    @DELETE("movie/{movie_id}/rating")
+    suspend fun deleteRating(
+        @Path("movie_id") movieId: Long,
+        @Query("guest_session_id") guestSessionId: String
+    ): RatingResponse
 
     companion object {
         const val BASE_URL = "https://api.themoviedb.org/3/"

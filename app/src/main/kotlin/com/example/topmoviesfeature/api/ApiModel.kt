@@ -45,3 +45,33 @@ data class WatchlistResponse(
     @SerializedName("status_code") val statusCode: Int? = null,
     @SerializedName("status_message") val statusMessage: String? = null
 )
+
+data class GuestSessionResponse(
+    @SerializedName("guest_session_id") val guestSessionId: String,
+    val success: Boolean
+)
+
+data class RatingRequest(
+    val value: Float
+)
+
+data class RatedMoviesResponse(
+    val results: List<RatedMovie>,
+    val page: Int,
+    @SerializedName("total_pages") val totalPages: Int,
+    @SerializedName("total_results") val totalResults: Int
+)
+
+data class RatedMovie(
+    val id: Long,
+    val rating: Float,
+    @SerializedName("vote_average") val voteAverage: Float? = null,
+    val title: String? = null,
+    @SerializedName("poster_path") val posterPath: String? = null
+)
+
+data class RatingResponse(
+    val success: Boolean,
+    @SerializedName("status_code") val statusCode: Int? = null,
+    @SerializedName("status_message") val statusMessage: String? = null
+)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.auth.AuthManager
+import com.example.topmoviesfeature.auth.GuestSessionManager
 import com.example.topmoviesfeature.detail.SimilarFilmMapper.toSimilarFilm
 import com.example.topmoviesfeature.main.FilmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,8 @@ import javax.inject.Inject
 internal class FilmDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val filmRepository: FilmRepository,
-    private val authManager: AuthManager
+    private val authManager: AuthManager,
+    private val guestSessionManager: GuestSessionManager
 ) : ViewModel() {
 
     private val filmId: Long = savedStateHandle.get<Long>(FILM_ID)!!
@@ -43,6 +45,12 @@ internal class FilmDetailViewModel @Inject constructor(
 
     private val _watchlistMessage = MutableStateFlow<String?>(null)
     val watchlistMessage = _watchlistMessage.asStateFlow()
+
+    private val _currentRating = MutableStateFlow(0f)
+    val currentRating = _currentRating.asStateFlow()
+
+    private val _ratingMessage = MutableStateFlow<String?>(null)
+    val ratingMessage = _ratingMessage.asStateFlow()
 
     val sortedSimilarFilms = combine(_similarFilms, _sortType) { films, sort ->
         sort.sort(films)
@@ -113,6 +121,49 @@ internal class FilmDetailViewModel @Inject constructor(
 
     fun setLoggedIn(loggedIn: Boolean) {
         _isLoggedIn.value = loggedIn
+    }
+
+    fun rateMovie(filmId: Long, rating: Float) {
+        viewModelScope.launch {
+            try {
+                var guestSessionId = guestSessionManager.getGuestSessionId()
+
+                if (guestSessionId == null) {
+                    guestSessionId = filmRepository.createGuestSession()
+                    guestSessionManager.saveGuestSession(guestSessionId)
+                }
+
+                val success = filmRepository.rateMovie(guestSessionId, filmId, rating)
+
+                if (success) {
+                    _currentRating.value = rating
+                    _ratingMessage.value = "Rated ${"★".repeat(rating.toInt())} ($rating/10)"
+                } else {
+                    _ratingMessage.value = "Failed to save rating"
+                }
+            } catch (e: Exception) {
+                _ratingMessage.value = "Error: ${e.message}"
+            }
+        }
+    }
+
+    fun deleteRating(filmId: Long) {
+        viewModelScope.launch {
+            try {
+                val guestSessionId = guestSessionManager.getGuestSessionId()
+
+                if (guestSessionId != null) {
+                    val success = filmRepository.deleteRating(guestSessionId, filmId)
+
+                    if (success) {
+                        _currentRating.value = 0f
+                        _ratingMessage.value = "Rating removed"
+                    }
+                }
+            } catch (e: Exception) {
+                _ratingMessage.value = "Error: ${e.message}"
+            }
+        }
     }
 
     internal companion object {

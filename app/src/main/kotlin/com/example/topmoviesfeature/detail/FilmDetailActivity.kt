@@ -70,6 +70,15 @@ class FilmDetailActivity : AppCompatActivity() {
                 }
         }
 
+        lifecycleScope.launch {
+            filmDetailViewModel.ratingMessage.flowWithLifecycle(lifecycle)
+                .collect { message ->
+                    if (message != null) {
+                        Toast.makeText(this@FilmDetailActivity, message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+        }
+
         setupSortMenu()
     }
 
@@ -122,6 +131,13 @@ class FilmDetailActivity : AppCompatActivity() {
         binding.filmOverview.text = movie.overview
 
         binding.progress.visibility = View.GONE
+
+        setupRatingUI(movie.id)
+    }
+
+    private fun setupRatingUI(filmId: Long) {
+        // This will be enhanced in Phase 8 with actual star rating widget
+        Toast.makeText(this, "Rate movies coming soon!", Toast.LENGTH_SHORT).show()
     }
 
     private fun displaySimilarFilms(films: List<SimilarFilm>) {

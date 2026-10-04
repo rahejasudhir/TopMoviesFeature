@@ -48,4 +48,32 @@ internal class FilmRepository @Inject constructor(private val filmService: FilmS
             WatchlistRequest(media_id = filmId, watchlist = add)
         ).success
     }
+
+    suspend fun createGuestSession(): String {
+        return filmService.createGuestSession().guestSessionId
+    }
+
+    suspend fun rateMovie(
+        guestSessionId: String,
+        filmId: Long,
+        rating: Float
+    ): Boolean {
+        return filmService.rateMovie(
+            filmId,
+            guestSessionId,
+            com.example.topmoviesfeature.api.RatingRequest(rating)
+        ).success
+    }
+
+    suspend fun deleteRating(
+        guestSessionId: String,
+        filmId: Long
+    ): Boolean {
+        return filmService.deleteRating(filmId, guestSessionId).success
+    }
+
+    suspend fun getGuestRatings(guestSessionId: String): Map<Long, Float> {
+        return filmService.getGuestRatings(guestSessionId).results
+            .associate { it.id to it.rating }
+    }
 }
