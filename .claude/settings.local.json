@@ -20,7 +20,10 @@
       "Bash(git config *)",
       "Bash(git add *)",
       "Bash(git commit *)",
-      "Bash(git reset *)"
+      "Bash(git reset *)",
+      "Bash(./gradlew :app:installDebug -q)",
+      "Bash(./gradlew :app:testDebugUnitTest --no-build-cache -q)",
+      "Bash(./gradlew :app:assembleDebug -q)"
     ]
   }
 }

@@ -5,11 +5,11 @@ apply plugin: 'dagger.hilt.android.plugin'
 apply from: "$rootDir/githooks.gradle"
 
 android {
-    namespace = "biz.filmeroo.premier"
+    namespace = "com.example.topmoviesfeature"
 
 
     defaultConfig {
-        applicationId "biz.filmeroo.premier"
+        applicationId "com.example.topmoviesfeature"
         minSdkVersion 23
         compileSdk 34
         targetSdkVersion 34
