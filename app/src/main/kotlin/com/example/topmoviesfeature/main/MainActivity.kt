@@ -1,4 +1,4 @@
-package biz.filmeroo.premier.main
+package com.example.topmoviesfeature.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -13,10 +13,10 @@ import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import biz.filmeroo.premier.R
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.databinding.ActivityMainBinding
-import biz.filmeroo.premier.detail.FilmDetailActivity
+import com.example.topmoviesfeature.R
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.databinding.ActivityMainBinding
+import com.example.topmoviesfeature.detail.FilmDetailActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,6 +1,6 @@
 package biz.filmeroo.com.example.topmoviesfeature.api
 
-import biz.filmeroo.premier.api.FilmService
+import com.example.topmoviesfeature.api.FilmService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.Test
 

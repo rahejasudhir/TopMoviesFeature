@@ -1,7 +1,7 @@
-package biz.filmeroo.premier.main
+package com.example.topmoviesfeature.main
 
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.api.FilmService
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.api.FilmService
 import javax.inject.Inject
 
 internal class FilmRepository @Inject constructor(private val filmService: FilmService) {

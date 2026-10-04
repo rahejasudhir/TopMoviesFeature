@@ -1,8 +1,8 @@
-package biz.filmeroo.premier.main
+package com.example.topmoviesfeature.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import biz.filmeroo.premier.api.ApiFilm
+import com.example.topmoviesfeature.api.ApiFilm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch

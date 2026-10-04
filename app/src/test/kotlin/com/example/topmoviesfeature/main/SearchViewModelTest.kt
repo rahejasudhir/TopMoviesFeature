@@ -1,8 +1,8 @@
 package biz.filmeroo.com.example.topmoviesfeature.main
 
 import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
-import biz.filmeroo.premier.main.FilmRepository
-import biz.filmeroo.premier.main.SearchViewModel
+import com.example.topmoviesfeature.main.FilmRepository
+import com.example.topmoviesfeature.main.SearchViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher

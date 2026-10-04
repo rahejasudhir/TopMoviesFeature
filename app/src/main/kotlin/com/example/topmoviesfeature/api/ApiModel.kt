@@ -1,4 +1,4 @@
-package biz.filmeroo.premier.api
+package com.example.topmoviesfeature.api
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,14 +1,14 @@
-package biz.filmeroo.premier.main
+package com.example.topmoviesfeature.main
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import biz.filmeroo.premier.R
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.api.FilmService
-import biz.filmeroo.premier.databinding.ItemFilmBinding
+import com.example.topmoviesfeature.R
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.api.FilmService
+import com.example.topmoviesfeature.databinding.ItemFilmBinding
 import com.squareup.picasso.Picasso
 import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 import javax.inject.Inject

@@ -1,10 +1,10 @@
 package biz.filmeroo.com.example.topmoviesfeature.main
 
 import biz.filmeroo.com.example.topmoviesfeature.CoroutineTestRule
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.api.FilmService
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.api.FilmService
 import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
-import biz.filmeroo.premier.main.FilmRepository
+import com.example.topmoviesfeature.main.FilmRepository
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat

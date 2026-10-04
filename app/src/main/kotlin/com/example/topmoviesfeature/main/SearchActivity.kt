@@ -1,4 +1,4 @@
-package biz.filmeroo.premier.main
+package com.example.topmoviesfeature.main
 
 import android.os.Bundle
 import android.text.Editable
@@ -7,8 +7,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.databinding.ActivitySearchBinding
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.databinding.ActivitySearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package biz.filmeroo.premier.app
+package com.example.topmoviesfeature.app
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

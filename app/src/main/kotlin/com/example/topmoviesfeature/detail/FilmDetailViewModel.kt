@@ -1,10 +1,10 @@
-package biz.filmeroo.premier.detail
+package com.example.topmoviesfeature.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.main.FilmRepository
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.main.FilmRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

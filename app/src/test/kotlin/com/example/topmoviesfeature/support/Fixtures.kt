@@ -1,7 +1,7 @@
 package biz.filmeroo.com.example.topmoviesfeature.support
 
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.api.ApiFilmListResponse
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.api.ApiFilmListResponse
 
 object Fixtures {
 

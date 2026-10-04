@@ -2,11 +2,11 @@ package biz.filmeroo.com.example.topmoviesfeature.detail
 
 import androidx.lifecycle.SavedStateHandle
 import biz.filmeroo.com.example.topmoviesfeature.CoroutineTestRule
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.detail.FilmDetailViewModel
-import biz.filmeroo.premier.detail.FilmDetailViewModel.Companion.FILM_ID
-import biz.filmeroo.premier.detail.FilmDetailViewModel.FilmDetailState
-import biz.filmeroo.premier.main.FilmRepository
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.detail.FilmDetailViewModel
+import com.example.topmoviesfeature.detail.FilmDetailViewModel.Companion.FILM_ID
+import com.example.topmoviesfeature.detail.FilmDetailViewModel.FilmDetailState
+import com.example.topmoviesfeature.main.FilmRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher

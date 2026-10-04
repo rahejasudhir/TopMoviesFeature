@@ -1,9 +1,9 @@
-package biz.filmeroo.premier.app
+package com.example.topmoviesfeature.app
 
 import android.content.Context
 import android.content.res.Resources
-import biz.filmeroo.premier.R
-import biz.filmeroo.premier.api.FilmService
+import com.example.topmoviesfeature.R
+import com.example.topmoviesfeature.api.FilmService
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import dagger.Module

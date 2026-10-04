@@ -1,4 +1,4 @@
-package biz.filmeroo.premier.detail
+package com.example.topmoviesfeature.detail
 
 import android.app.Activity
 import android.content.Intent
@@ -9,11 +9,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import biz.filmeroo.premier.R
-import biz.filmeroo.premier.api.ApiFilm
-import biz.filmeroo.premier.api.FilmService
-import biz.filmeroo.premier.databinding.ActivityDetailBinding
-import biz.filmeroo.premier.detail.FilmDetailViewModel.FilmDetailState
+import com.example.topmoviesfeature.R
+import com.example.topmoviesfeature.api.ApiFilm
+import com.example.topmoviesfeature.api.FilmService
+import com.example.topmoviesfeature.databinding.ActivityDetailBinding
+import com.example.topmoviesfeature.detail.FilmDetailViewModel.FilmDetailState
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
