@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.detail.SimilarFilmMapper.toSimilarFilm
 import com.example.topmoviesfeature.main.FilmRepository
+import com.example.topmoviesfeature.watchlist.WatchlistManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.async
@@ -21,7 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class FilmDetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val filmRepository: FilmRepository
+    private val filmRepository: FilmRepository,
+    private val watchlistManager: WatchlistManager
 ) : ViewModel() {
 
     private val filmId: Long = savedStateHandle.get<Long>(FILM_ID)!!
@@ -35,6 +37,9 @@ internal class FilmDetailViewModel @Inject constructor(
 
     private val _sortType = MutableStateFlow(SortType.DEFAULT)
     val sortType = _sortType.asStateFlow()
+
+    private val _watchlist = MutableStateFlow(watchlistManager.getWatchlist())
+    val watchlist = _watchlist.asStateFlow()
 
     val sortedSimilarFilms = combine(_similarFilms, _sortType) { films, sort ->
         sort.sort(films)
@@ -76,6 +81,15 @@ internal class FilmDetailViewModel @Inject constructor(
 
     fun setSortType(sort: SortType) {
         _sortType.value = sort
+    }
+
+    fun toggleWatchlist(filmId: Long) {
+        if (watchlistManager.isInWatchlist(filmId)) {
+            watchlistManager.removeFromWatchlist(filmId)
+        } else {
+            watchlistManager.addToWatchlist(filmId)
+        }
+        _watchlist.update { watchlistManager.getWatchlist() }
     }
 
     internal companion object {

@@ -24,7 +24,15 @@
       "Bash(./gradlew :app:installDebug -q)",
       "Bash(./gradlew :app:testDebugUnitTest --no-build-cache -q)",
       "Bash(./gradlew :app:assembleDebug -q)",
-      "Bash(./gradlew testDebugUnitTest -x precompileDependencies)"
+      "Bash(./gradlew testDebugUnitTest -x precompileDependencies)",
+      "Bash(git remote *)",
+      "Bash(git push *)",
+      "Bash(gh auth *)",
+      "Bash(git fetch *)",
+      "Bash(gh repo *)",
+      "Bash(gh api *)",
+      "Bash(./gradlew assembleDebug)",
+      "Bash(./gradlew testReleaseUnitTest)"
     ]
   }
 }

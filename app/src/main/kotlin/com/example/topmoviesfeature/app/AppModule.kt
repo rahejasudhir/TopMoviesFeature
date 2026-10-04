@@ -1,6 +1,7 @@
 package com.example.topmoviesfeature.app
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.content.res.Resources
 import com.example.topmoviesfeature.R
 import com.example.topmoviesfeature.api.FilmService
@@ -59,4 +60,10 @@ object AppModule {
     @Provides
     @Singleton
     fun providePicasso(): Picasso = Picasso.get()
+
+    @Provides
+    @Singleton
+    fun provideSharedPreferences(@ApplicationContext context: Context): SharedPreferences {
+        return context.getSharedPreferences("topmovies_prefs", Context.MODE_PRIVATE)
+    }
 }

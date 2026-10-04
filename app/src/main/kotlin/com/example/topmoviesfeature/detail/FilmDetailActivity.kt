@@ -43,6 +43,7 @@ class FilmDetailActivity : AppCompatActivity() {
         binding.toolbar.setNavigationOnClickListener { finish() }
         binding.similarRecyclerview.adapter = similarFilmAdapter
         similarFilmAdapter.setOnClick { id -> start(this, id) }
+        similarFilmAdapter.setOnWatchlistToggle { id -> filmDetailViewModel.toggleWatchlist(id) }
 
         lifecycleScope.launch {
             filmDetailViewModel.filmDetailState.flowWithLifecycle(lifecycle).collect(::updateState)
@@ -51,6 +52,11 @@ class FilmDetailActivity : AppCompatActivity() {
         lifecycleScope.launch {
             filmDetailViewModel.sortedSimilarFilms.flowWithLifecycle(lifecycle)
                 .collect(::displaySimilarFilms)
+        }
+
+        lifecycleScope.launch {
+            filmDetailViewModel.watchlist.flowWithLifecycle(lifecycle)
+                .collect { watchlist -> similarFilmAdapter.setWatchlist(watchlist) }
         }
 
         setupSortMenu()
