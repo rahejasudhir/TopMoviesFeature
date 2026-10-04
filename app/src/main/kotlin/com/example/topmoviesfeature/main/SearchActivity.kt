@@ -1,6 +1,8 @@
 package com.example.topmoviesfeature.main
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -94,8 +96,8 @@ class SearchActivity : androidx.appcompat.app.AppCompatActivity() {
 
     private fun showResults(results: List<ApiFilm>) {
         adapter.submitList(results)
-        binding.recycler.post {
+        Handler(Looper.getMainLooper()).postDelayed({
             binding.recycler.scrollToPosition(0)
-        }
+        }, 100)
     }
 }

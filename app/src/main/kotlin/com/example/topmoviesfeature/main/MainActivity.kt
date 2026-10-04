@@ -2,6 +2,8 @@ package com.example.topmoviesfeature.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.InputType
 import android.view.View
 import android.widget.PopupMenu
@@ -111,9 +113,9 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
 
     private fun displayResults(results: List<ApiFilm>) {
         adapter.submitList(results)
-        binding.recycler.post {
+        Handler(Looper.getMainLooper()).postDelayed({
             binding.recycler.scrollToPosition(0)
-        }
+        }, 100)
     }
 
     private fun displayError() {
