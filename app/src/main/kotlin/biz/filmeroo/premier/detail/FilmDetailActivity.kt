@@ -1,10 +1,8 @@
 package biz.filmeroo.premier.detail
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -49,44 +47,9 @@ class FilmDetailActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            filmDetailViewModel.sortedSimilarFilms.flowWithLifecycle(lifecycle)
+            filmDetailViewModel.similarFilm.flowWithLifecycle(lifecycle)
                 .collect(::displaySimilarFilms)
         }
-
-        setupSortMenu()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_film_detail, menu)
-        return true
-    }
-
-    private fun setupSortMenu() {
-        binding.toolbar.setOnMenuItemClickListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.action_sort -> {
-                    showSortDialog()
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun showSortDialog() {
-        val items = arrayOf("Default Order", "Rating (High to Low)", "Title (A-Z)")
-        AlertDialog.Builder(this)
-            .setTitle("Sort by")
-            .setItems(items) { _, which ->
-                val sortType = when (which) {
-                    0 -> SortType.DEFAULT
-                    1 -> SortType.RATING_HIGH_TO_LOW
-                    2 -> SortType.TITLE_A_TO_Z
-                    else -> SortType.DEFAULT
-                }
-                filmDetailViewModel.setSortType(sortType)
-            }
-            .show()
     }
 
     private fun updateState(filmDetailState: FilmDetailState) {
