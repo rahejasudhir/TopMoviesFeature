@@ -1,8 +1,10 @@
 package biz.filmeroo.com.example.topmoviesfeature.main
 
 import biz.filmeroo.com.example.topmoviesfeature.support.Fixtures
+import com.example.topmoviesfeature.api.ApiFilm
 import com.example.topmoviesfeature.main.FilmRepository
 import com.example.topmoviesfeature.main.SearchViewModel
+import com.example.topmoviesfeature.main.SortBy
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -134,5 +136,131 @@ class SearchViewModelTest {
         verify(repository).search("m")
         verify(repository).search("movie")
         assertThat(viewModel.searchResults.first()).isEqualTo(result2)
+    }
+
+    @Test
+    fun `search results sorted by title ascending`(): Unit = runTest {
+        val results = listOf(
+            ApiFilm(1, "Zebra", "desc", "/z", "/bz", "8.0"),
+            ApiFilm(2, "Apple", "desc", "/a", "/ba", "7.5"),
+            ApiFilm(3, "Banana", "desc", "/b", "/bb", "8.5")
+        )
+        whenever(repository.search("movie")).thenReturn(results)
+
+        viewModel.updateQuery("movie")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.TITLE_ASC)
+        advanceUntilIdle()
+
+        val sorted = viewModel.searchResults.first()
+        assertThat(sorted.map { it.title }).isEqualTo(listOf("Apple", "Banana", "Zebra"))
+    }
+
+    @Test
+    fun `search results sorted by title descending`(): Unit = runTest {
+        val results = listOf(
+            ApiFilm(1, "Zebra", "desc", "/z", "/bz", "8.0"),
+            ApiFilm(2, "Apple", "desc", "/a", "/ba", "7.5"),
+            ApiFilm(3, "Banana", "desc", "/b", "/bb", "8.5")
+        )
+        whenever(repository.search("movie")).thenReturn(results)
+
+        viewModel.updateQuery("movie")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.TITLE_DESC)
+        advanceUntilIdle()
+
+        val sorted = viewModel.searchResults.first()
+        assertThat(sorted.map { it.title }).isEqualTo(listOf("Zebra", "Banana", "Apple"))
+    }
+
+    @Test
+    fun `search results sorted by rating ascending`(): Unit = runTest {
+        val results = listOf(
+            ApiFilm(1, "High", "desc", "/h", "/bh", "8.5"),
+            ApiFilm(2, "Low", "desc", "/l", "/bl", "7.0"),
+            ApiFilm(3, "Mid", "desc", "/m", "/bm", "7.5")
+        )
+        whenever(repository.search("movie")).thenReturn(results)
+
+        viewModel.updateQuery("movie")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.RATING_ASC)
+        advanceUntilIdle()
+
+        val sorted = viewModel.searchResults.first()
+        assertThat(sorted.map { it.voteAverage }).isEqualTo(listOf("7.0", "7.5", "8.5"))
+    }
+
+    @Test
+    fun `search results sorted by rating descending`(): Unit = runTest {
+        val results = listOf(
+            ApiFilm(1, "High", "desc", "/h", "/bh", "8.5"),
+            ApiFilm(2, "Low", "desc", "/l", "/bl", "7.0"),
+            ApiFilm(3, "Mid", "desc", "/m", "/bm", "7.5")
+        )
+        whenever(repository.search("movie")).thenReturn(results)
+
+        viewModel.updateQuery("movie")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.RATING_DESC)
+        advanceUntilIdle()
+
+        val sorted = viewModel.searchResults.first()
+        assertThat(sorted.map { it.voteAverage }).isEqualTo(listOf("8.5", "7.5", "7.0"))
+    }
+
+    @Test
+    fun `sort persists when search query changes`(): Unit = runTest {
+        val result1 = listOf(
+            ApiFilm(1, "Zebra", "desc", "/z", "/bz", "8.0"),
+            ApiFilm(2, "Apple", "desc", "/a", "/ba", "7.5")
+        )
+        val result2 = listOf(
+            ApiFilm(3, "Movie", "desc", "/m", "/bm", "8.5"),
+            ApiFilm(4, "Action", "desc", "/ac", "/bac", "7.2")
+        )
+        whenever(repository.search("book")).thenReturn(result1)
+        whenever(repository.search("action")).thenReturn(result2)
+
+        viewModel.updateQuery("book")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.TITLE_ASC)
+        advanceUntilIdle()
+
+        viewModel.updateQuery("action")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        val sorted = viewModel.searchResults.first()
+        assertThat(sorted.map { it.title }).isEqualTo(listOf("Action", "Movie"))
+    }
+
+    @Test
+    fun `changing sort does not trigger new API call`(): Unit = runTest {
+        val results = listOf(
+            ApiFilm(1, "Zebra", "desc", "/z", "/bz", "8.0"),
+            ApiFilm(2, "Apple", "desc", "/a", "/ba", "7.5")
+        )
+        whenever(repository.search("movie")).thenReturn(results)
+
+        viewModel.updateQuery("movie")
+        advanceTimeBy(300)
+        advanceUntilIdle()
+
+        viewModel.updateSort(SortBy.TITLE_ASC)
+        advanceUntilIdle()
+
+        verify(repository, times(1)).search("movie")
     }
 }
