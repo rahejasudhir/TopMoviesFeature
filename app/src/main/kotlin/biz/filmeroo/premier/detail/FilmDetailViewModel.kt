@@ -12,6 +12,8 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -30,6 +32,13 @@ internal class FilmDetailViewModel @Inject constructor(
 
     private val _similarFilms = MutableStateFlow<List<SimilarFilm>>(emptyList())
     val similarFilm = _similarFilms.asStateFlow()
+
+    private val _sortType = MutableStateFlow(SortType.DEFAULT)
+    val sortType = _sortType.asStateFlow()
+
+    val sortedSimilarFilms = combine(_similarFilms, _sortType) { films, sort ->
+        sort.sort(films)
+    }.stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Eagerly, emptyList())
 
     init {
         viewModelScope.launch {
@@ -63,6 +72,10 @@ internal class FilmDetailViewModel @Inject constructor(
         } catch (e: Exception) {
             emptyMap()
         }
+    }
+
+    fun setSortType(sort: SortType) {
+        _sortType.value = sort
     }
 
     internal companion object {
