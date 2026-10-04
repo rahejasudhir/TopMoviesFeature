@@ -111,6 +111,7 @@ class MainActivity : androidx.appcompat.app.AppCompatActivity() {
 
     private fun displayResults(results: List<ApiFilm>) {
         adapter.submitList(results)
+        binding.recycler.scrollToPosition(0)
     }
 
     private fun displayError() {
